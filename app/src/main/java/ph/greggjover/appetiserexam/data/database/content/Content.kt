@@ -1,8 +1,10 @@
 package ph.greggjover.appetiserexam.data.database.content
 
+import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kotlinx.parcelize.Parcelize
 
 /**
  * Room Entity class that stores content in the Database.
@@ -11,10 +13,11 @@ import androidx.room.PrimaryKey
  * detail view.
  */
 @Entity(tableName = "content")
+@Parcelize
 data class Content(
     @ColumnInfo val artworkUrl: String,
     @ColumnInfo val longDescription: String,
     @ColumnInfo val primaryGenreName: String,
     @ColumnInfo @PrimaryKey val trackName: String,
     @ColumnInfo val trackPrice: Double,
-)
+) : Parcelable

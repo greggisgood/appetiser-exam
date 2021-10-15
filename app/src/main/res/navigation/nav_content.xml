@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_content"
+    app:startDestination="@id/contentListFragment">
+
+    <fragment
+        android:id="@+id/contentListFragment"
+        android:name="ph.greggjover.appetiserexam.ui.list.ContentListFragment"
+        android:label="@string/app_bar_contents"
+        tools:layout="@layout/fragment_content_list" >
+        <action
+            android:id="@+id/listToDetails"
+            app:destination="@id/contentDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/contentDetailsFragment"
+        android:name="ph.greggjover.appetiserexam.ui.details.ContentDetailsFragment"
+        android:label="@string/app_bar_details"
+        tools:layout="@layout/fragment_content_details" >
+        <argument
+            android:name="content"
+            app:argType="ph.greggjover.appetiserexam.data.database.content.Content" />
+    </fragment>
+
+</navigation>

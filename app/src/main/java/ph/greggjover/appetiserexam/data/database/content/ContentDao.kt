@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import kotlinx.coroutines.flow.Flow
 
 /**
  * Room Data Access Object class that performs SQL Commands for [Content]
@@ -15,7 +16,7 @@ interface ContentDao {
      * Retrieves all available [Content] from the table
      */
     @Query("SELECT * FROM content")
-    fun getAll(): List<Content>
+    fun getAll(): Flow<List<Content>>
 
     /**
      * Inserts [Content] into the table

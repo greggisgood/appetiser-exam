@@ -15,7 +15,8 @@ import kotlinx.parcelize.Parcelize
 @Entity(tableName = "content")
 @Parcelize
 data class Content(
-    @ColumnInfo val artworkUrl: String,
+    @ColumnInfo val artworkUrlForDetail: String,
+    @ColumnInfo val artworkUrlForList: String,
     @ColumnInfo val longDescription: String,
     @ColumnInfo val primaryGenreName: String,
     @ColumnInfo @PrimaryKey val trackName: String,

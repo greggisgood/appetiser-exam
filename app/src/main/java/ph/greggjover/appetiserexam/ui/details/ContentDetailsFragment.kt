@@ -5,7 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.navArgs
+import coil.load
 import dagger.hilt.android.AndroidEntryPoint
+import ph.greggjover.appetiserexam.R
 import ph.greggjover.appetiserexam.databinding.FragmentContentDetailsBinding
 import ph.greggjover.appetiserexam.ui.extensions.viewBindingLifeCycle
 
@@ -16,6 +19,7 @@ import ph.greggjover.appetiserexam.ui.extensions.viewBindingLifeCycle
 class ContentDetailsFragment : Fragment() {
 
     private var binding by viewBindingLifeCycle<FragmentContentDetailsBinding>()
+    private val navArgs by navArgs<ContentDetailsFragmentArgs>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,6 +33,13 @@ class ContentDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // TODO: Add implementation here
+        with(binding) {
+            val content = navArgs.content
+            contentImageView.load(content.artworkUrlForDetail)
+            contentTitleTextView.text = content.trackName
+            contentGenreTextView.text = content.primaryGenreName
+            contentDescriptionTextView.text = content.longDescription
+            contentPriceTextView.text = getString(R.string.price_formatter, content.trackPrice)
+        }
     }
 }

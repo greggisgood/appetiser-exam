@@ -4,4 +4,6 @@
     <!-- App Bar Names -->
     <string name="app_bar_contents">Contents</string>
     <string name="app_bar_details">Details</string>
+
+    <string name="price_formatter">$%.2f</string>
 </resources>

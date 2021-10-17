@@ -1,5 +1,6 @@
 package ph.greggjover.appetiserexam.data.repository
 
+import androidx.room.withTransaction
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import ph.greggjover.appetiserexam.data.database.AppDatabase
@@ -17,9 +18,9 @@ class ContentRepository @Inject constructor(
 ) {
 
     /**
-     * This function retrieves content from [AppDatabase]. [Flow] is used to observe and
-     * immediately any Content changes in [AppDatabase] and groups the data
-     * into a list of [GenreWithContent] to be displayed in the UI
+     * This function retrieves content from [AppDatabase]. A [Flow] is used to observe any Content
+     * changes in [AppDatabase] and groups the data into a list of alphabetically sorted [GenreWithContent]
+     * to be displayed in the UI
      *
      * @return - a [Flow] of a list of [GenreWithContent]
      */
@@ -27,8 +28,12 @@ class ContentRepository @Inject constructor(
         db.contentDao().getAll().map { contents ->
             contents.map { it.primaryGenreName }
                 .distinct()
+                .sorted()
                 .map { genre ->
-                    GenreWithContent(genre, contents.filter { it.primaryGenreName == genre })
+                    GenreWithContent(
+                        genre,
+                        contents.filter { it.primaryGenreName == genre }
+                            .sortedBy { it.trackName })
                 }
         }
 
@@ -39,20 +44,22 @@ class ContentRepository @Inject constructor(
     suspend fun getContent() {
         val response = service.searchContent(
             term = "star",
-            country = "all",
+            country = "au",
             media = "movie",
         )
 
-        db.contentDao().insert(response.results.map {
-            Content(
-                artworkUrlForDetail = it.artworkUrl100,
-                artworkUrlForList = it.artworkUrl60,
-                longDescription = it.longDescription,
-                primaryGenreName = it.primaryGenreName,
-                trackName = it.trackName,
-                trackPrice = it.trackPrice
-            )
-        })
+        db.withTransaction {
+            db.contentDao().insert(response.results.map {
+                Content(
+                    artworkUrlForDetail = it.artworkUrl100,
+                    artworkUrlForList = it.artworkUrl60,
+                    longDescription = it.longDescription,
+                    primaryGenreName = it.primaryGenreName,
+                    trackName = it.trackName,
+                    trackPrice = it.trackPrice
+                )
+            })
+        }
     }
 
 }

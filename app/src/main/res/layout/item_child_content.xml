@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/contentLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp">
+
+    <ImageView
+        android:id="@+id/contentImageView"
+        android:layout_width="@dimen/content_list_image_size"
+        android:layout_height="@dimen/content_list_image_size"
+        android:contentDescription="@null"
+        android:scaleType="fitCenter"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/contentTitleTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:gravity="start|center_vertical"
+        android:textAppearance="?attr/textAppearanceBody1"
+        android:textColor="@color/material_on_surface_emphasis_high_type"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/contentImageView"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="A Star Is Born (2018)" />
+
+    <TextView
+        android:id="@+id/contentPriceTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:gravity="start|center_vertical"
+        android:textAppearance="?attr/textAppearanceBody2"
+        android:textColor="@color/material_on_background_emphasis_medium"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/contentImageView"
+        app:layout_constraintTop_toBottomOf="@+id/contentTitleTextView"
+        tools:text="$7.99" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

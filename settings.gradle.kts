@@ -7,4 +7,4 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "AppetiserExam"
-include ':app'
+include(":app")

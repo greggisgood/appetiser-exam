@@ -72,6 +72,10 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
 
+    // Epoxy
+    implementation("com.airbnb.android:epoxy:4.6.4")
+    kapt("com.airbnb.android:epoxy-processor:4.6.4")
+
     // Hilt Dependency Injection
     implementation("com.google.dagger:hilt-android:2.38.1")
     kapt("com.google.dagger:hilt-android-compiler:2.38.1")

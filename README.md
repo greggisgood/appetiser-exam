@@ -5,6 +5,8 @@ both list and detail format. The URL used to load the content is:
 
 `https://itunes.apple.com/search?term=star&country=au&media=movie`
 
+A `Snackbar` will be displayed if the endpoint fails to retrieve the latest content. Furthermore,
+`SwipeToRefresh` functionality is added for the user to manually trigger the content retrieval.
 
 `Room` is used to persist the data retrieved from the endpoint, allowing the user to immediately see
 the content when opening the app again, even when the endpoint fails to load. A `Flow` is used to

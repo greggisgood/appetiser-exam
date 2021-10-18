@@ -80,6 +80,9 @@ dependencies {
     implementation("com.google.dagger:hilt-android:2.38.1")
     kapt("com.google.dagger:hilt-android-compiler:2.38.1")
 
+    // LiveEvent
+    implementation("com.github.hadilq:live-event:1.3.0")
+
     // Moshi
     implementation("com.squareup.moshi:moshi:1.12.0")
     implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
@@ -108,4 +111,5 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.1")
     implementation("androidx.fragment:fragment-ktx:1.3.6")
     implementation("androidx.recyclerview:recyclerview:1.2.1")
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
 }

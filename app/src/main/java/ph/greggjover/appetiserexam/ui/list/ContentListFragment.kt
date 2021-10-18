@@ -7,7 +7,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import ph.greggjover.appetiserexam.R
 import ph.greggjover.appetiserexam.data.database.content.GenreWithContent
 import ph.greggjover.appetiserexam.databinding.FragmentContentListBinding
 import ph.greggjover.appetiserexam.ui.extensions.viewBindingLifeCycle
@@ -35,10 +37,24 @@ class ContentListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Configure the SwipeRefreshLayout to fetch the latest content upon refresh
+        binding.swipeRefreshLayout.setOnRefreshListener { viewModel.getContent() }
+
         // A Flow is dispatched to observe Content changes from the Database, and the updated content
         // will be used to immediately update the UI Thread
         viewModel.contentLiveData.observe(viewLifecycleOwner) {
+            binding.swipeRefreshLayout.isRefreshing = false
             buildContentRecyclerView(it)
+        }
+
+        // If there is an error fetching the latest content from the backend, display an error Snackbar
+        viewModel.contentFetchFailedEvent.observe(viewLifecycleOwner) {
+            binding.swipeRefreshLayout.isRefreshing = false
+            Snackbar.make(
+                binding.root,
+                getString(R.string.fetch_failed_message),
+                Snackbar.LENGTH_SHORT
+            ).show()
         }
     }
 

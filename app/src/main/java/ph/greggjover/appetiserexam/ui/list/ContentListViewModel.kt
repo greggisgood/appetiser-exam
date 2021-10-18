@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.hadilq.liveevent.LiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -21,6 +22,10 @@ class ContentListViewModel @Inject constructor(
 
     private val _contentLiveData = MutableLiveData<List<GenreWithContent>>()
     val contentLiveData: LiveData<List<GenreWithContent>> = _contentLiveData
+
+    private val _contentFetchFailedEvent = LiveEvent<Unit>()
+    val contentFetchFailedEvent: LiveData<Unit> = _contentFetchFailedEvent
+
 
     init {
         observeContentFromDb()
@@ -46,7 +51,16 @@ class ContentListViewModel @Inject constructor(
      *
      * The observing Flow from [observeContentFromDb] will be updated and emits the
      * updated list of [GenreWithContent] to [ContentListFragment]
+     *
+     * If there are issues fetching the latest Content, the [LiveEvent] [contentFetchFailedEvent]
+     * will be triggered, which notifies the user that the fetching has failed
      */
-    private fun getContent() = viewModelScope.launch { repository.getContent() }
+    fun getContent() = viewModelScope.launch {
+        runCatching {
+            repository.getContent()
+        }.onFailure {
+            _contentFetchFailedEvent.value = Unit
+        }
+    }
 
 }

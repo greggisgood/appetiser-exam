@@ -11,11 +11,16 @@
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
     </style>
 
-    <style name="Theme.AppetiserExam.NoActionBar">
+    <style name="Theme.AppetiserExam.NoActionBar" parent="Theme.AppetiserExam">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+    </style>
+
+    <!-- Controls the Toolbar Text Color and Back Button Color -->
+    <style name="Theme.AppetiserExam.MaterialToolbar" parent="Theme.AppetiserExam">
+        <item name="android:textColorPrimary">@android:color/white</item>
+        <item name="colorControlNormal">@android:color/white</item>
     </style>
 </resources>

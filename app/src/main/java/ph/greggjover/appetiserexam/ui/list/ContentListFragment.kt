@@ -7,10 +7,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import ph.greggjover.appetiserexam.R
+import ph.greggjover.appetiserexam.data.database.content.GenreWithContent
 import ph.greggjover.appetiserexam.databinding.FragmentContentListBinding
 import ph.greggjover.appetiserexam.ui.extensions.viewBindingLifeCycle
-import ph.greggjover.appetiserexam.ui.list.adapter.ContentListAdapter
+import ph.greggjover.appetiserexam.ui.list.epoxy.contentEpoxyHolder
+import ph.greggjover.appetiserexam.ui.list.epoxy.genreEpoxyHolder
 
 /**
  * Fragment that displays all available content, which is segregated by Genre name
@@ -33,22 +37,54 @@ class ContentListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = ContentListAdapter(
-            // Clicking a Content will redirect the user the Details screen
-            clickAction = {
-                findNavController().navigate(
-                    ContentListFragmentDirections.listToDetails(
-                        it
-                    )
-                )
-            }
-        )
-        binding.contentRecyclerView.adapter = adapter
+        // Configure the SwipeRefreshLayout to fetch the latest content upon refresh
+        binding.swipeRefreshLayout.setOnRefreshListener { viewModel.getContent() }
 
         // A Flow is dispatched to observe Content changes from the Database, and the updated content
-        // will be immediately sent to the Adapter to update the UI
+        // will be used to immediately update the UI Thread
         viewModel.contentLiveData.observe(viewLifecycleOwner) {
-            adapter.submitList(it)
+            binding.swipeRefreshLayout.isRefreshing = false
+            buildContentRecyclerView(it)
+        }
+
+        // If there is an error fetching the latest content from the backend, display an error Snackbar
+        viewModel.contentFetchFailedEvent.observe(viewLifecycleOwner) {
+            binding.swipeRefreshLayout.isRefreshing = false
+            Snackbar.make(
+                binding.root,
+                getString(R.string.fetch_failed_message),
+                Snackbar.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+    /**
+     * Builds the EpoxyRecyclerView from the content returned
+     *
+     * @param contents - List of [GenreWithContent]
+     */
+    private fun buildContentRecyclerView(contents: List<GenreWithContent>) {
+        val contentRecyclerView = binding.contentRecyclerView
+        contentRecyclerView.withModels {
+            contents.forEach { genreWithContent ->
+                genreEpoxyHolder {
+                    id("ID_GENRE_${genreWithContent.genre}")
+                    genre(genreWithContent.genre)
+                }
+                genreWithContent.content.forEach { content ->
+                    contentEpoxyHolder {
+                        id("ID_CONTENT_${content.trackName}")
+                        content(content)
+                        contentClick {
+                            findNavController().navigate(
+                                ContentListFragmentDirections.listToDetails(
+                                    it
+                                )
+                            )
+                        }
+                    }
+                }
+            }
         }
     }
 }

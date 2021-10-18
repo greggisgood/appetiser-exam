@@ -72,9 +72,16 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
 
+    // Epoxy
+    implementation("com.airbnb.android:epoxy:4.6.4")
+    kapt("com.airbnb.android:epoxy-processor:4.6.4")
+
     // Hilt Dependency Injection
     implementation("com.google.dagger:hilt-android:2.38.1")
     kapt("com.google.dagger:hilt-android-compiler:2.38.1")
+
+    // LiveEvent
+    implementation("com.github.hadilq:live-event:1.3.0")
 
     // Moshi
     implementation("com.squareup.moshi:moshi:1.12.0")
@@ -104,4 +111,5 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.1")
     implementation("androidx.fragment:fragment-ktx:1.3.6")
     implementation("androidx.recyclerview:recyclerview:1.2.1")
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
 }
